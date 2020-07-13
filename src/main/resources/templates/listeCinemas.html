@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorator="template1.html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div layout:fragment="pageContent">
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-header">Liste des cinemas</div>
+                <div class="card-body">
+                    <div class="row">
+                        <form method="get" th:action="@{listeCinemas}">
+                            <div class="form-group">
+                                <label>  Nom  </label>
+                                <input type="text" name="keyword" th:value="${keyword}">
+                                <button type="submit" class="btn btn-success">Rechercher</button>
+                            </div>
+                        </form>
+                        <div class="col-sm-4">
+                           <td sec:authorize="hasRole('ROLE_ADMIN')">  <a href="addTest" class="btn btn-info add-new" ><i class="fa fa-plus"></i> Ajouter</a>
+                           </td>
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Ville</th>
+                            <th>Nombre de salles</th>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')">Supprimer</th>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')">Modifier</th>
+                        </tr>
+                        </thead>
+                        <tr th:each="p:${listedesCinemas}">
+                            <td th:text="${p.id}"></td>
+                            <td th:text="${p.name}"></td>
+                            <td th:text="${p.ville.name}"></td>
+                            <td th:text="${p.nombreSalles}"></td>
+                            <td sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a onclick="return confirm('Etes vous sure de vouloir supprimer ?')"
+                                   class="btn btn-danger" th:href="@{deleteCinema(id=${p.id})}">
+                                    <i class="material-icons">&#xE872;</i>
+                                </a>
+                            </td>
+                            <td sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a class="btn btn-success" th:href="@{editCinema(id=${p.id})}"><i class="material-icons">&#xE254;</i></a>
+                            </td>
+                        </tr>
+                    </table>
+                    <ul class="nav nav-pills">
+                        <li th:each="page,status:${pages}">
+                            <a th:class="${status.index==currentPage? 'btn btn-primary': 'btn'}"
+                               th:href="@{listeCinemas(page=${status.index},keyword=${keyword},size=${size})}"  th:text="${status.index}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

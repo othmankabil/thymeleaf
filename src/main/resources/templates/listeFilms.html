@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorator="template1.html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.1.3/css/bootstrap.min.css">
+
+</head>
+<body>
+<div layout:fragment="pageContent">
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-info">Liste des films</div>
+            <div class="card-body">
+                <div class="row">
+                    <form method="get" th:action="@{listeFilms}">
+                        <div class="form-group">
+                            <label>Titre</label>
+                            <input type="text" name="keyword" th:value="${keyword}">
+                            <button type="submit" class="btn btn-success">Rechercher</button>
+                        </div>
+                    </form>
+                    <div class="col-sm-4"> <td sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a href="addFilm" class="btn btn-info add-new" ><i class="fa fa-plus"></i> Ajouter</a></td>
+                    </div>
+                </div>
+
+                <table class="table   table-striped table-sm" cellspacing="0" width="100%"> 
+                    <thead >
+                    <tr>
+                        <th>ID</th>
+                        <th>Tire</th>
+                        <th>Description</th>
+                        <th>Realisateur</th>
+                        <th>Date de sortie</th>
+                        <th>Duree</th>
+                        <th>Image</th>
+                        <th>Categorie</th>
+                        <th sec:authorize="hasRole('ROLE_ADMIN')">Supprimer</th>
+                        <th sec:authorize="hasRole('ROLE_ADMIN')">Modifier</th>
+                    </tr>
+                    </thead>
+                    <tbody class="thead-dark">
+                    <tr th:each=" p : ${listedesFilms}">
+                        <td th:text="${p.id}"></td>
+                        <td th:text="${p.titre}"></td>
+                        <td th:text="${p.description}"></td>
+                        <td th:text="${p.realisateur}"></td>
+                        <td th:text="${p.dateSortie}"></td>
+                        <td th:text="${p.duree}"></td>
+                       <td><img height="150" width="100" th:src="@{'http://localhost:8080/imageFilm/'+${p.id}}"></td>
+                        <td th:text="${p.categorie.name}"></td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a onclick="return confirm('Etes vous sure de vouloir supprimer ?')"
+                               class="btn btn-danger" th:href="@{deleteFilms(id=${p.id})}"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')">
+                            <a class="btn btn-success" th:href="@{editFilm(id=${p.id})}"><i class="material-icons">&#xE254;</i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="nav nav-pills">
+                    <li th:each="page,status:${pages}">
+                        <a th:class="${status.index==currentPage? 'btn btn-primary': 'btn'}"
+                           th:href="@{listeFilms(page=${status.index},keyword=${keyword},size=${size})}"  th:text="${status.index}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

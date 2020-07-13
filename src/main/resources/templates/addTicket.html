@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="template1.html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<div layout:fragment="pageContent">
+    <div class="container mt-5">
+        <div class="card col-md-6">
+            <div class="card-header" th:if="${mode == 'new'}">Ajouter un ticket:</div>
+            <div class="card-header" th:if="${mode == 'edit'}">Modifier un ticket:</div>
+            <div class="card-body">
+                <form th:action="@{saveTicket}" method="post">
+                    <div class="form-group">
+                        <label class="control-label">ID:</label>
+                        <label class="control-label" th:text="${ticket.id}"></label>
+                        <input type="hidden" class="form-control" name="id" th:value="${ticket.id}">
+                        <span></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Nom du client:</label>
+                        <input type="text" class="form-control" name="nomCLient" th:value="${ticket.nomClient}">
+                        <span></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Prix:</label>
+                        <input type="text" class="form-control" name="prix" th:value="${ticket.prix}">
+                        <span></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Code paiement:</label>
+                        <input type="text" class="form-control" name="codePayement" th:value="${ticket.codePaiement}">
+                        <span></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Réservation:</label>
+                        <input type="text" class="form-control" name="reserve" th:value="${ticket.reservee}">
+                        <span></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Place:</label>
+                        <select class="form-control selectpicker" name="salle" >
+                            <option value="0">Choisir une salle</option>
+                            <option th:each="p : ${listedesPlaces}"
+                                    th:value="${p.id}"
+                                    th:text="${p.numero}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Projection:</label>
+                        <select class="form-control selectpicker" name="projection" >
+                            <option value="0">Choisir une projection</option>
+                            <option th:each="s : ${listedesProjections}"
+                                    th:value="${s.id}"
+                                    th:text="${s.dateProjection}">
+                            </option>
+                        </select>
+                    </div>
+                    <button class="btn btn-success" type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

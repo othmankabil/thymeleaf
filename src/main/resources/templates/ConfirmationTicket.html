@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorator="template1.html">
+<head>
+    <meta charset="UTF-8">
+    <title>Titre</title>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<div layout:fragment="pageContent">
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">Enregitrement effectué</div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>ID:</label>
+                    <label th:text="${ticket.id}"></label>
+                </div>
+                <div class="form-group">
+                    <label>Nom Client:</label>
+                    <label th:text="${ticket.nomClient}"></label>
+                </div>
+                <div class="form-group">
+                    <label>Prix:</label>
+                    <label th:text="${ticket.prix}"></label>
+                </div>
+                <div class="form-group">
+                    <label>Code paiement:</label>
+                    <label th:text="${ticket.codePaiement}"></label>
+                </div>
+                <div class="form-group">
+                    <label>Réservation:</label>
+                    <label th:text="${ticket.reservee}"></label>
+                </div>
+                <div class="form-group">
+                    <label>Place:</label>
+                    <label th:text="${ticket.place.salle}"></label>
+                </div>
+                <div class="form-group">
+                    <label>Projection:</label>
+                    <label th:text="${ticket.projection.dateProjection}"></label>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
+
